@@ -125,3 +125,8 @@ class OrderTests(TestCase):
         for side in ('bids', 'asks'):
             self.assertEqual(len(levels[side]), 2)
         
+if __name__ == '__main__':
+    pass
+    # unittest.main()
+    
+    # python -m unittest orderbook_tests.py

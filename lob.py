@@ -257,6 +257,10 @@ class LimitOrderBook:
             # to that price level
             self._orders[order.uid] = order
             self._price_levels[order.price].append(order)
+            if order.is_bid and order.price > self.best_bid.price:
+                self.best_bid = self._price_levels[order.price]
+            elif not order.is_bid and order.price < self.best_ask.price:
+                self.best_ask = self._price_levels[order.price]
     
     
     def levels(self, depth=None):
@@ -266,9 +270,9 @@ class LimitOrderBook:
         :return:
         """
         levels_sorted = sorted(self._price_levels.keys())
-        bids_all = reversed([price_level for price_level in levels_sorted if price_level < self.best_ask.price])
+        bids_all = reversed([price_level for price_level in levels_sorted if price_level <= self.best_bid.price])
         bids = list(islice(bids_all, depth)) if depth else list(bids_all)
-        asks_all = (price_level for price_level in levels_sorted if price_level > self.best_bid.price)
+        asks_all = (price_level for price_level in levels_sorted if price_level >= self.best_ask.price)
         asks = list(islice(asks_all, depth)) if depth else list(asks_all)
         levels_dict = {
             'bids' : [self._price_levels[price] for price in bids],
