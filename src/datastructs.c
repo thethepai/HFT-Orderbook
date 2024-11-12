@@ -1,15 +1,15 @@
 /**
  * Contains complimentary data structures needed to run the LOB.
  */
-#include <stdlib.h>
 #include "hftlob.h"
+#include <stdlib.h>
 
-void
-pushToQueue(Queue *q, Limit *limit){
-    QueueItem *ptr_newItem = malloc(sizeof(QueueItem));
+void pushToQueue(Queue* q, Limit* limit)
+{
+    QueueItem* ptr_newItem = malloc(sizeof(QueueItem));
     ptr_newItem->limit = limit;
 
-    if(q->head != NULL){
+    if (q->head != NULL) {
         q->head->previous = ptr_newItem;
     }
     q->head = ptr_newItem;
@@ -18,15 +18,15 @@ pushToQueue(Queue *q, Limit *limit){
     q->size++;
 }
 
-Limit*
-popFromQueue(Queue *q){
-    if(q->tail == NULL){
+Limit* popFromQueue(Queue* q)
+{
+    if (q->tail == NULL) {
         return NULL;
     }
-    QueueItem *poppedItem = q->tail;
-    Limit *poppedLimit = q->tail->limit;
+    QueueItem* poppedItem = q->tail;
+    Limit* poppedLimit = q->tail->limit;
     q->tail = q->tail->previous;
-    if(q->tail==NULL){
+    if (q->tail == NULL) {
         q->head = NULL;
     }
     q->size--;
@@ -34,9 +34,9 @@ popFromQueue(Queue *q){
     return poppedLimit;
 }
 
-int
-queueIsEmpty(Queue *q){
-    if(q->tail == NULL){
+int queueIsEmpty(Queue* q)
+{
+    if (q->tail == NULL) {
         return 1;
     }
     return 0;
